@@ -4,6 +4,7 @@ class Blog extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
+        check_permission();
         $this->load->model('Blog_model');
     }
 
@@ -51,6 +52,16 @@ class Blog extends CI_Controller {
     public function delete($id)
     {
         $this->Blog_model->delete($id);
+        echo json_encode(true);
+    }
+
+    public function delete_checked()
+    {
+        $post = $this->input->post();
+        foreach($post['check_id'] as $key => $check) {
+            $this->Blog_model->delete($key);
+        }
+
         echo json_encode(true);
     }
 }

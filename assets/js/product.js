@@ -24,4 +24,18 @@ $(function () {
             }
         });
     });
+
+    $('.btn-delete-selected').on('click', function(){
+        var data = $('#blogForm').serializeJSON();
+        $.ajax({
+            url: $base_url + 'blog/delete_checked/',
+            type: 'POST',
+            data: data,
+            success: function (res) {
+                if (res) {
+                    location.href = $base_url + 'blog';
+                }
+            }
+        });
+    });
 });

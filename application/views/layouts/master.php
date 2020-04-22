@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -36,13 +35,16 @@
     </style>        
   </head>
   <body>
-    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+  <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
   <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>  
-  <ul class="navbar-nav px-3">
-    <li class="nav-item text-nowrap">
-      <a class="nav-link" href="#">Sign out</a>
-    </li>
-  </ul>
+  <div>
+    <span class="text-white float-left mt-2"><?=$auth_user['name']?></span>
+    <ul class="navbar-nav px-3">
+      <li class="nav-item text-nowrap">
+        <a class="nav-link" href="<?=base_url('auth/logout')?>">Sign out</a>
+      </li>
+    </ul>
+  </div>
 </nav>
 
 <div class="container-fluid">
@@ -69,64 +71,32 @@
                 </ul>
             </div>
           </li>
-            
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="shopping-cart"></span>
-              Products
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="users"></span>
-              Customers
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="bar-chart-2"></span>
-              Reports
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="layers"></span>
-              Integrations
-            </a>
-          </li>
         </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-          <span>Saved reports</span>
+          <span>Main Menu</span>
           <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
             <span data-feather="plus-circle"></span>
           </a>
         </h6>
         <ul class="nav flex-column mb-2">
+          <?php if(!empty($visibles) && $visibles['blog'] == 1): ?>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="<?=base_url('blog')?>">
               <span data-feather="file-text"></span>
-              Current month
+              Blog
             </a>
           </li>
+          <?php endif; ?>
+
+          <?php if(!empty($visibles) && $visibles['author'] == 1): ?>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="<?=base_url('author')?>">
               <span data-feather="file-text"></span>
-              Last quarter
+              Author
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Social engagement
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Year-end sale
-            </a>
-          </li>
+          <?php endif; ?>
         </ul>
       </div>
     </nav>
@@ -142,6 +112,7 @@
 <script src="<?=base_url('node_modules/jquery/dist/jquery.min.js')?>"></script>      
 <script src="<?=base_url('node_modules/bootstrap/dist/js/bootstrap.min.js')?>"></script> 
 <script src="<?=base_url('node_modules/sweetalert2/dist/sweetalert2.min.js')?>"></script> 
+<script src="<?=base_url('node_modules/jquery-serializejson/jquery.serializejson.min.js')?>"></script> 
 <script src="<?=base_url('assets/js/dashboard.js')?>"></script>
 <script src="<?=base_url('assets/js/home.js')?>"></script>
 
