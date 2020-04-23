@@ -9,8 +9,8 @@ function template($content, $data = array(), $value = array())
     $temp['auth_user'] = $CI->session->userdata('auth_user');
     $permissions = $CI->Permission_model->get_by_author($temp['auth_user']['id']);
     $visibles = array();
-    foreach ($permissions as $value) {
-        $visibles[$value['menu_name']] = $value['visible'];
+    foreach ($permissions as $perm) {
+        $visibles[$perm['menu_name']] = $perm['visible'];
     }
 
     $CI->session->set_userdata('permissions', $visibles);
@@ -31,7 +31,6 @@ function check_permission()
     $CI = &get_instance();
     $menu = $CI->router->fetch_class();
     $permissions = $CI->session->userdata('permissions');
-    log_message('debug', print_r($permissions[$menu], true));
     if ($permissions[$menu] == 0) {
         redirect('auth/page_denine');
     }

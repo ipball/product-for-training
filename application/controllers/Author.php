@@ -4,7 +4,7 @@ class Author extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
-        check_permission();
+        // check_permission();
         $this->load->model('Author_model');
         $this->load->model('Menu_model');
         $this->load->model('Permission_model');
@@ -75,15 +75,24 @@ class Author extends CI_Controller {
     public function permission($id)
     {
         $data['author_id'] = $id;
-        $data['menus'] = $this->Menu_model->get_all();
-        $permissions = $this->Permission_model->get_by_author($id);
+        $data['menus'] = $this->Menu_model->get_all();        
+        $permissions = $this->Permission_model->get_by_author($id);        
         $new_pms = array();
+        $new_crud = array();
         foreach ($permissions as $permission ) {
             $new_pms[$permission['menu_name']] = $permission['visible'];
+            $new_crud[$permission['menu_name']]['is_view'] = !empty($permission['is_view']);
+            $new_crud[$permission['menu_name']]['is_create'] = !empty($permission['is_create']);
+            $new_crud[$permission['menu_name']]['is_update'] = !empty($permission['is_update']);
+            $new_crud[$permission['menu_name']]['is_delete'] = !empty($permission['is_delete']);
         }
         
         foreach($data['menus'] as &$item) {
-            $item['is_checked'] = $new_pms[$item['name']];
+            $item['is_checked'] = !empty($new_pms[$item['name']]) ? $new_pms[$item['name']] : 0;
+            $item['is_view'] = !empty($new_crud[$item['name']]['is_view']) ? $new_crud[$item['name']]['is_view'] : 0;
+            $item['is_create'] = !empty($new_crud[$item['name']]['is_create']) ? $new_crud[$item['name']]['is_create'] : 0;
+            $item['is_update'] = !empty($new_crud[$item['name']]['is_update']) ? $new_crud[$item['name']]['is_update'] : 0;
+            $item['is_delete'] = !empty($new_crud[$item['name']]['is_delete']) ? $new_crud[$item['name']]['is_delete'] : 0;
         }
         
         template('author/permission_form', $data, array('script'=>'author.js'));
@@ -92,7 +101,9 @@ class Author extends CI_Controller {
     public function save_permission()
     {
         $post = $this->input->post();
-        $this->Permission_model->delete_by_author($post['author_id']);
+
+        // permission visible
+        $this->Permission_model->delete_by_author($post['author_id']);        
         foreach($post['is_visible'] as $key => $visible) {
             $data = array(
                 'menu_name' => $key,
@@ -100,6 +111,22 @@ class Author extends CI_Controller {
                 'visible' => $visible
             );                        
             $this->Permission_model->save($data);
+        }
+
+        // permission crud
+        $is_action = array('is_view', 'is_create', 'is_update', 'is_delete');
+        
+        foreach($is_action as $action) {
+            if(!empty($post[$action])) {
+                foreach($post[$action] as $menu_name => $menu_value) {
+                    $data = array(
+                        'author_id' => $post['author_id'],
+                        'menu_name' => $menu_name,
+                        $action => $menu_value
+                    );
+                    $this->Permission_model->update_by_author($data);                    
+                }
+            }
         }
 
         redirect('author');

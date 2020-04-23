@@ -31,6 +31,12 @@ class Permission_model extends CI_Model
         $this->db->update('permissions', $data);
     }
 
+    public function update_by_author($data)
+    {
+        $this->db->where('author_id', $data['author_id'])->where('menu_name', $data['menu_name']);
+        $this->db->update('permissions', $data);
+    }
+
     public function delete_by_author($id)
     {
         $this->db->where('author_id', $id);
@@ -42,4 +48,5 @@ class Permission_model extends CI_Model
         $query = $this->db->from('permissions')->where('author_id', $id)->get();
         return $query->result_array();
     }
+    
 }
