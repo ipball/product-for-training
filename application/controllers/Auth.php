@@ -5,6 +5,7 @@ class Auth extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('Author_model');
+        $this->load->model('Permission_model');
     }
 
     public function index()
@@ -30,6 +31,22 @@ class Auth extends CI_Controller {
                 'role_name' => ($user['role'] == 1 ? 'Administrator' : 'User')
             );
             $this->session->set_userdata('auth_user', $newdata);
+
+            $permissions = $this->Permission_model->get_by_author($newdata['id']);
+            $visibles = array();
+            $crud = array();
+            foreach ($permissions as $perm) {
+                $visibles[$perm['menu_name']] = !empty($perm['visible']) ? $perm['visible'] : 0;
+                $crud[$perm['menu_name']]['is_view'] = !empty($perm['is_view']) ? $perm['is_view'] : 0;
+                $crud[$perm['menu_name']]['is_create'] = !empty($perm['is_create']) ? $perm['is_create'] : 0;
+                $crud[$perm['menu_name']]['is_update'] = !empty($perm['is_update']) ? $perm['is_update'] : 0;
+                $crud[$perm['menu_name']]['is_delete'] = !empty($perm['is_delete']) ? $perm['is_delete'] : 0;
+            }
+
+            $this->session->set_userdata('permissions', $visibles);
+            $this->session->set_userdata('crud', $crud);
+
+
             redirect('blog');
         } else {
             $this->session->set_flashdata('message', 'ชื่อผู้ใช้หรือรหัสผ่านผิดพลาด!');

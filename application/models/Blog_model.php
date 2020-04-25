@@ -13,6 +13,9 @@ class Blog_model extends CI_Model
             'id' => null,
             'name' => null,
             'detail' => null,
+            'cover_image' => null,
+            'cover_alt' => null,
+            'cover_title' => null,
             'author_id' => null,
             'created_at' => date('Y-m-d H:i:s')
         );
