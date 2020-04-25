@@ -35,19 +35,43 @@ CREATE TABLE IF NOT EXISTS `blogs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `detail` text DEFAULT NULL,
+  `cover_image` varchar(250) DEFAULT NULL,
+  `cover_alt` varchar(250) DEFAULT NULL,
+  `cover_title` varchar(250) DEFAULT NULL,
   `author_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table product.blogs: ~3 rows (approximately)
+-- Dumping data for table product.blogs: ~2 rows (approximately)
 DELETE FROM `blogs`;
 /*!40000 ALTER TABLE `blogs` DISABLE KEYS */;
-INSERT INTO `blogs` (`id`, `name`, `detail`, `author_id`, `created_at`) VALUES
-	(19, 'testt', 's', 2, '2020-04-22 20:15:55'),
-	(23, 'tteetet', '', 2, '2020-04-22 20:16:08'),
-	(24, 'testest', 'dfdfdfdf', 2, '2020-04-22 20:40:36');
+INSERT INTO `blogs` (`id`, `name`, `detail`, `cover_image`, `cover_alt`, `cover_title`, `author_id`, `created_at`) VALUES
+	(19, 'testt', 's', NULL, NULL, NULL, 2, '2020-04-22 20:15:55'),
+	(23, 'tteetet', '', NULL, NULL, NULL, 2, '2020-04-22 20:16:08'),
+	(24, 'testest', 'dfdfdfdf', NULL, NULL, NULL, 2, '2020-04-22 20:40:36'),
+	(25, 'test111111', '', NULL, NULL, NULL, 2, '2020-04-23 23:19:33'),
+	(26, 'aaaaaa', 'test', '643x256x2.jpg', '2222', '1111', 2, '2020-04-25 20:25:57');
 /*!40000 ALTER TABLE `blogs` ENABLE KEYS */;
+
+-- Dumping structure for table product.gallerys
+CREATE TABLE IF NOT EXISTS `gallerys` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ordering` int(11) NOT NULL DEFAULT 0,
+  `path_name` varchar(250) DEFAULT NULL,
+  `title_name` varchar(250) DEFAULT NULL,
+  `alt_name` varchar(250) DEFAULT NULL,
+  `blog_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table product.gallerys: ~0 rows (approximately)
+DELETE FROM `gallerys`;
+/*!40000 ALTER TABLE `gallerys` DISABLE KEYS */;
+INSERT INTO `gallerys` (`id`, `ordering`, `path_name`, `title_name`, `alt_name`, `blog_id`) VALUES
+	(9, 1, '20160910-ji-glacier-national-park-_dsf0631_web.jpg', 'ttttttt1', 'aaaaa1', 26),
+	(10, 2, 'entertainment-wide-hq-misc-photography-644041.jpg', 't2', 'a12222', 26);
+/*!40000 ALTER TABLE `gallerys` ENABLE KEYS */;
 
 -- Dumping structure for table product.menus
 CREATE TABLE IF NOT EXISTS `menus` (
@@ -70,20 +94,26 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   `menu_name` varchar(50) NOT NULL,
   `author_id` int(11) NOT NULL,
   `visible` tinyint(4) DEFAULT NULL COMMENT '0=none, 1=visible',
-  `is_read` tinyint(4) DEFAULT NULL COMMENT '0=none, 1=enable',
+  `is_view` tinyint(4) DEFAULT NULL COMMENT '0=none, 1=enable',
   `is_create` tinyint(4) DEFAULT NULL COMMENT '0=none, 1=enable',
   `is_update` tinyint(4) DEFAULT NULL COMMENT '0=none, 1=enable',
   `is_delete` tinyint(4) DEFAULT NULL COMMENT '0=none, 1=enable',
   PRIMARY KEY (`menu_name`,`author_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table product.permissions: ~0 rows (approximately)
+-- Dumping data for table product.permissions: ~9 rows (approximately)
 DELETE FROM `permissions`;
 /*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
-INSERT INTO `permissions` (`menu_name`, `author_id`, `visible`, `is_read`, `is_create`, `is_update`, `is_delete`) VALUES
-	('author', 2, 0, NULL, NULL, NULL, NULL),
-	('blog', 2, 1, NULL, NULL, NULL, NULL),
-	('customer', 2, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `permissions` (`menu_name`, `author_id`, `visible`, `is_view`, `is_create`, `is_update`, `is_delete`) VALUES
+	('author', 1, 1, 1, NULL, NULL, NULL),
+	('author', 2, 1, 1, 1, 1, 1),
+	('author', 3, 1, 1, 1, 1, 1),
+	('blog', 1, 1, 1, 1, NULL, NULL),
+	('blog', 2, 1, 1, 1, 1, 1),
+	('blog', 3, 1, 1, 1, 1, 1),
+	('customer', 1, 1, NULL, NULL, NULL, NULL),
+	('customer', 2, 1, NULL, NULL, NULL, NULL),
+	('customer', 3, 1, 1, 1, 1, 1);
 /*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
